@@ -3,19 +3,19 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Deepak Yadav | Premium Software Consultant",
-  description: "Deepak Yadav is a Full Stack Developer, Bitrix24 Consultant, CRM Automation Expert and AI Solutions Developer.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://example.com"),
+  title: "Deepak | AI-First Software Engineer",
+  description: "Deepak builds AI-powered SaaS products, AI agents, intelligent automations, and production-ready full-stack software.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://deepak-yadav-portfolio.dk4796804.chatgpt.site"),
   openGraph: {
-    title: "Deepak Yadav | Premium Technology Consulting",
-    description: "Premium website and CRM automation consultancy built for enterprise growth.",
+    title: "Deepak | AI-First Software Engineer",
+    description: "Production-ready Next.js, TypeScript, Python, Node.js, PostgreSQL, LLM, and AI agent development.",
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
     title: "Deepak Yadav",
-    description: "Premium software consulting, Bitrix24 solutions, CRM automation, and AI product development.",
-    creator: "@deepak_yadav"
+    description: "AI-powered SaaS products, AI agents, intelligent automations, and full-stack software.",
+    creator: "@Deepudholiwal"
   }
 };
 

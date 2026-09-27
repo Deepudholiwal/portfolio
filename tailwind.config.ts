@@ -12,8 +12,9 @@ const config: Config = {
         "hero-grid": "radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 25%), radial-gradient(circle at bottom, rgba(73, 69, 255, 0.12), transparent 20%)"
       },
       colors: {
+        mint: "#69f0bf",
         surface: "#05060f",
-        panel: "rgba(10, 14, 40, 0.85)"
+        panel: "rgba(7, 19, 28, 0.85)"
       }
     }
   },

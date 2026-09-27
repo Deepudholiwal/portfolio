@@ -4,24 +4,24 @@ import { motion } from "framer-motion";
 
 const services = [
   {
-    title: "Website Development",
-    items: ["Business websites", "Corporate websites", "Landing pages", "Portals", "Real Estate Websites"]
+    title: "AI Development",
+    summary: "Custom intelligent solutions that use LLMs and agentic workflows to automate reasoning and decisions.",
+    items: ["Autonomous AI agents", "Conversational chatbots", "RAG workflows", "Custom LLM API integrations"]
   },
   {
-    title: "Bitrix24 Services",
-    items: ["Implementation", "Customization", "Automation", "Business Processes", "CRM Setup", "Training"]
+    title: "Full Stack Development",
+    summary: "Responsive, secure, production-ready applications with modern frontends and performant backends.",
+    items: ["SaaS MVP development", "Interactive dashboards", "Secure admin panels", "Clean REST APIs"]
   },
   {
-    title: "CRM Automation",
-    items: ["Lead Management", "Sales Automation", "Workflow Automation", "Approval Systems"]
+    title: "Business Automation",
+    summary: "Connected systems and internal tools that replace repetitive manual work with reliable pipelines.",
+    items: ["Custom internal tools", "Workflow automation", "API and SaaS integrations", "Event orchestration"]
   },
   {
-    title: "AI Solutions",
-    items: ["AI Chatbots", "AI Website Assistants", "AI Customer Support", "Business Automation"]
-  },
-  {
-    title: "Mobile App Development",
-    items: ["React Native", "Android", "iOS", "Cross Platform"]
+    title: "Technical Consulting",
+    summary: "Architecture and implementation strategy that reduces build risk and improves time-to-market.",
+    items: ["Architecture planning", "AI feasibility strategy", "Tech stack optimization", "Code quality advisory"]
   }
 ];
 
@@ -30,28 +30,31 @@ export default function Services() {
     <section id="services" className="px-6 py-20 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
-          <p className="text-sm uppercase tracking-[0.28em] text-cyan-300/80">Services</p>
-          <h2 className="mt-3 text-4xl font-semibold text-white sm:text-5xl">Premium services tailored for growth.</h2>
+          <p className="section-kicker">Service Catalog</p>
+          <h2 className="section-title">What I can build for you.</h2>
         </div>
-        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-2">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
-              whileHover={{ y: -10, scale: 1.02 }}
-              transition={{ ease: "easeOut", duration: 0.3 }}
-              className="glass-panel rounded-[32px] border border-white/10 bg-[#070911]/85 p-7 shadow-soft"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.45, delay: index * 0.05 }}
+              className="rounded-lg border border-white/10 bg-[#07131c]/90 p-6 shadow-soft"
             >
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-xl font-semibold text-white">{service.title}</h3>
-                  <p className="mt-2 text-sm text-slate-400">Luxury motion-led interaction and modern business engineering.</p>
+                  <h3 className="text-2xl font-semibold text-white">{service.title}</h3>
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">{service.summary}</p>
                 </div>
-                <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-violet-500/10 text-violet-200">{index + 1}</div>
+                <span className="rounded-md border border-mint/20 bg-mint/10 px-3 py-2 text-sm font-semibold text-mint">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
               </div>
-              <ul className="mt-6 space-y-3 text-sm leading-6 text-slate-300">
+              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {service.items.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-cyan-300" />
+                  <li key={item} className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-300">
                     {item}
                   </li>
                 ))}

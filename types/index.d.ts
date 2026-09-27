@@ -4,8 +4,8 @@ export type ProjectCard = {
   description: string;
   stack: string[];
   liveUrl: string;
-  githubUrl: string;
-  image: string;
+  githubUrl?: string;
+  image?: string;
 };
 
 export type GitHubRepo = {
@@ -13,7 +13,6 @@ export type GitHubRepo = {
   name: string;
   description: string | null;
   url: string;
-  homepage: string | null;
+  homepage: string;
   language: string | null;
-  stars: number;
 };
