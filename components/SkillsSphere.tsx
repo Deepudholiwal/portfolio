@@ -4,59 +4,38 @@ import { motion } from "framer-motion";
 
 const groups = [
   {
-    label: "Business & Compliance",
-    skills: [
-      "GST / ITR / TDS workflows",
-      "ROC / MCA workflows",
-      "PAN validation",
-      "Indian currency formats",
-      "CA practice management",
-      "Bitrix24",
-    ],
-  },
-  {
     label: "Frontend",
-    skills: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Framer Motion",
-      "Responsive UI",
-    ],
+    skills: ["HTML", "CSS", "JavaScript", "React", "Next.js", "Tailwind CSS"],
   },
   {
     label: "Backend",
+    skills: ["PHP", "Node.js", "Python", "Laravel", "Django"],
+  },
+  {
+    label: "CRM & Automation",
     skills: [
-      "Node.js",
-      "Express",
+      "Bitrix24",
       "REST APIs",
-      "Authentication",
-      "Socket.IO",
-      "Google Places API",
+      "Webhooks",
+      "CRM workflows",
+      "Business process automation",
     ],
   },
   {
-    label: "Databases & Tools",
-    skills: [
-      "PostgreSQL",
-      "MongoDB",
-      "Docker",
-      "GitHub",
-      "Vercel",
-      "Clean Architecture",
-    ],
+    label: "Database & Tools",
+    skills: ["MongoDB", "MySQL", "Git", "GitHub", "Vercel", "Prisma"],
   },
 ];
 
 export default function SkillsSphere() {
   return (
-    <section id="skills" className="px-6 py-20 lg:px-10">
+    <section id="skills" className="section-shell px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
-          <p className="section-kicker">Expertise</p>
-          <h2 className="section-title">Skills and technologies.</h2>
+          <p className="section-kicker">Skills</p>
+          <h2 className="section-title">The stack I use to build reliable business software.</h2>
         </div>
+
         <div className="grid gap-5 md:grid-cols-2">
           {groups.map((group, index) => (
             <motion.div
@@ -65,18 +44,16 @@ export default function SkillsSphere() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.45, delay: index * 0.05 }}
-              className="rounded-lg border border-white/10 bg-[#07131c]/90 p-5 shadow-soft"
+              className="glass-panel rounded-[2rem] border border-white/10 p-6"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <h3 className="text-xl font-semibold text-white">
-                  {group.label}
-                </h3>
+                <h3 className="text-xl font-semibold text-white">{group.label}</h3>
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 {group.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-slate-300"
+                    className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-slate-200"
                   >
                     {skill}
                   </span>

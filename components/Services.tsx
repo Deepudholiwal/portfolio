@@ -4,59 +4,40 @@ import { motion } from "framer-motion";
 
 const services = [
   {
-    title: "Compliance & CA Software",
+    title: "Website Development",
     summary:
-      "Business software shaped around the daily work of Indian accounting and tax practices.",
-    items: [
-      "GST, ITR & TDS workflows",
-      "ROC / MCA task management",
-      "Client workspaces",
-      "Indian data formats",
-    ],
+      "Modern websites for service businesses, portfolios, and product brands that need cleaner positioning and better conversion flow.",
+    items: ["Landing pages", "Marketing websites", "Portfolio design", "Responsive UX"],
   },
   {
-    title: "B2B SaaS & Real Estate",
+    title: "Full-Stack Web Applications",
     summary:
-      "Full-stack products for property discovery, rental operations, and business teams.",
-    items: [
-      "Property search & listings",
-      "Owner / tenant workflows",
-      "Real-time messaging",
-      "Operational dashboards",
-    ],
+      "Web apps designed to support workflows, data collection, dashboards, and team operations from the front end to the data layer.",
+    items: ["Custom dashboards", "User portals", "Admin flows", "API-backed apps"],
   },
   {
-    title: "Business Automation",
+    title: "Bitrix24 CRM Implementation",
     summary:
-      "Connected systems and internal tools that replace repetitive manual work with reliable pipelines.",
-    items: [
-      "Custom internal tools",
-      "Workflow automation",
-      "API and SaaS integrations",
-      "Event orchestration",
-    ],
+      "CRM setup, configuration, and workflow design built around how your team captures leads, tracks follow-up, and manages deals.",
+    items: ["Lead pipelines", "Task automation", "Approval flows", "Integration work"],
   },
   {
-    title: "CRM & Bitrix24 Implementation",
+    title: "Business Process Automation",
     summary:
-      "CRM configuration and integrations built around how your team handles leads and follow-ups.",
-    items: [
-      "Sales pipelines",
-      "Bitrix24 implementation",
-      "Lead capture integrations",
-      "Follow-up workflows",
-    ],
+      "Automation for repetitive business tasks, data processing, and internal operations that reduce manual work and improve consistency.",
+    items: ["Webhook integration", "API syncs", "Triggers", "Workflow automation"],
   },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="px-6 py-20 lg:px-10">
+    <section id="services" className="section-shell px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
-          <p className="section-kicker">Service Catalog</p>
-          <h2 className="section-title">What I can build for you.</h2>
+          <p className="section-kicker">Services</p>
+          <h2 className="section-title">Practical digital systems that support a growing business.</h2>
         </div>
+
         <div className="grid gap-5 lg:grid-cols-2">
           {services.map((service, index) => (
             <motion.div
@@ -65,26 +46,25 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.45, delay: index * 0.05 }}
-              className="rounded-lg border border-white/10 bg-[#07131c]/90 p-6 shadow-soft"
+              className="glass-panel rounded-[2rem] border border-white/10 p-6"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-2xl font-semibold text-white">
-                    {service.title}
-                  </h3>
+                  <h3 className="text-2xl font-semibold text-white">{service.title}</h3>
                   <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
                     {service.summary}
                   </p>
                 </div>
-                <span className="rounded-md border border-mint/20 bg-mint/10 px-3 py-2 text-sm font-semibold text-mint">
+                <span className="rounded-full border border-mint/20 bg-mint/10 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-mint">
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
+
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {service.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-300"
+                    className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-200"
                   >
                     {item}
                   </li>

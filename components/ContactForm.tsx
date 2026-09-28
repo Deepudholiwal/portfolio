@@ -5,17 +5,13 @@ import { useState, type FormEvent } from "react";
 const services = [
   "Web Development",
   "Website Redesign",
-  "E-commerce Development",
-  "Frontend Development",
-  "Backend & API Development",
-  "Compliance & CA Software",
-  "B2B SaaS & Real Estate",
-  "Business Automation",
-  "CRM & Bitrix24 Implementation",
-  "API & Third-party Integrations",
-  "Website Maintenance & Support",
+  "Full-Stack Web Application",
+  "Bitrix24 Implementation",
+  "CRM Automation",
+  "Business Process Automation",
+  "Custom SaaS Development",
   "Technical Consulting",
-  "Other / Let's Discuss",
+  "Other / Let’s Discuss",
 ];
 
 export default function ContactForm() {
@@ -39,6 +35,7 @@ export default function ContactForm() {
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (sending) return;
+
     setSending(true);
     setStatus("Sending inquiry...");
 
@@ -72,22 +69,54 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="px-6 py-20 lg:px-10">
+    <section id="contact" className="section-shell px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
           <p className="section-kicker">Contact</p>
-          <h2 className="section-title">Discuss a project.</h2>
-          <p className="mt-4 leading-7 text-slate-400">
-            Tell me about your business, the workflow you want to improve, and
-            your timeline.
+          <h2 className="section-title">Let’s talk about the system you need to build.</h2>
+          <p className="mt-4 max-w-2xl text-base leading-8 text-slate-400">
+            Share the problem, the workflow, and your timeline. I’ll help map the right
+            technical approach and next steps.
           </p>
         </div>
-        <div className="rounded-lg border border-white/10 bg-[#07131c]/90 p-6 shadow-soft">
-          <form
-            className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]"
-            onSubmit={submit}
-          >
-            <div className="space-y-4">
+
+        <div className="glass-panel rounded-[2rem] border border-white/10 p-6 sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+            <aside className="rounded-[1.6rem] border border-white/10 bg-[#07131c]/90 p-6">
+              <p className="section-kicker">Reach out</p>
+              <h3 className="mt-4 text-2xl font-semibold text-white">Have a project in mind?</h3>
+
+              <div className="mt-6 space-y-4 text-sm text-slate-300">
+                <p>Gurugram, Haryana 122506</p>
+                <a href="mailto:dk4796804@gmail.com" className="block hover:text-mint">
+                  dk4796804@gmail.com
+                </a>
+                <a href="tel:+918307928412" className="block hover:text-mint">
+                  +91 8307928412
+                </a>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3 text-sm">
+                <a
+                  href="https://github.com/Deepudholiwal"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="button-ghost text-sm"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="https://linkedin.com/in/deepak-yadav01"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="button-secondary text-sm"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </aside>
+
+            <form className="space-y-4" onSubmit={submit} noValidate>
               <div className="grid gap-4 sm:grid-cols-2">
                 <input
                   required
@@ -109,6 +138,7 @@ export default function ContactForm() {
                   className="input-field"
                 />
               </div>
+
               <div className="grid gap-4 sm:grid-cols-2">
                 <input
                   required
@@ -129,6 +159,7 @@ export default function ContactForm() {
                   className="input-field"
                 />
               </div>
+
               <div className="grid gap-4 sm:grid-cols-2">
                 <input
                   value={form.country}
@@ -145,6 +176,7 @@ export default function ContactForm() {
                   className="input-field"
                 />
               </div>
+
               <select
                 required
                 value={form.service}
@@ -158,34 +190,32 @@ export default function ContactForm() {
                   </option>
                 ))}
               </select>
-            </div>
-            <div className="space-y-4">
+
               <textarea
                 required
                 value={form.message}
                 maxLength={2000}
                 onChange={(e) => handleChange("message", e.target.value)}
-                rows={10}
+                rows={8}
                 placeholder="Tell me about your project, requirements, or timeline."
                 aria-label="Message"
-                className="input-field min-h-[320px] resize-none"
+                className="input-field min-h-[200px] resize-none"
               />
-              <button
-                type="submit"
-                disabled={sending}
-                className="button-primary w-full disabled:opacity-60"
-              >
-                {sending ? "Sending..." : "Send project details"}
-              </button>
-              <p
-                role="status"
-                aria-live="polite"
-                className="text-sm text-slate-300"
-              >
-                {status}
-              </p>
-            </div>
-          </form>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="button-primary w-full sm:w-auto disabled:opacity-60"
+                >
+                  {sending ? "Sending..." : "Send project details"}
+                </button>
+                <p role="status" aria-live="polite" className="text-sm text-slate-300">
+                  {status}
+                </p>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>

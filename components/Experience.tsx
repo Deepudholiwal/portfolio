@@ -2,90 +2,65 @@
 
 import { motion } from "framer-motion";
 
-const workflow = [
-  [
-    "01",
-    "Discovery",
-    "Analyze product specs, user journeys, and business goals to outline the right scope.",
-  ],
-  [
-    "02",
-    "Architecture",
-    "Design schema models, API patterns, and component states before implementation.",
-  ],
-  [
-    "03",
-    "Development",
-    "Write clean, typed, modular full-stack code using Next.js, React, and TypeScript.",
-  ],
-  [
-    "04",
-    "Integration",
-    "Connect CRM tools, business APIs, and automation to the team's daily workflow.",
-  ],
-  [
-    "05",
-    "Testing",
-    "Review layout stability, schemas, API behavior, and production readiness.",
-  ],
-  [
-    "06",
-    "Deployment",
-    "Ship optimized builds to Vercel or Docker and verify performance and SEO.",
-  ],
-];
-
-const advantages = [
-  "Production-ready Architecture",
-  "Scalable Systems",
-  "Modern UI/UX",
-  "AI-assisted Delivery",
-  "Rapid MVP Development",
-  "Clean Maintainable Code",
-  "Business-focused Solutions",
-  "Performance Optimization",
+const experience = [
+  {
+    period: "2024 — Present",
+    role: "Web Developer",
+    company: "Starmoon Technology Consultant Pvt Ltd",
+    description:
+      "Focused on frontend implementation, Bitrix24 customization, WordPress, Laravel work, SEO, and CRM integration for client-facing digital products.",
+  },
+  {
+    period: "Bitrix24 & CRM",
+    role: "Implementation & Automation",
+    company: "Business systems",
+    description:
+      "Configured CRM workflows, business process automation, and third-party integrations to support lead handling and team operations.",
+  },
+  {
+    period: "Product & SaaS",
+    role: "Full-stack development",
+    company: "Custom business software",
+    description:
+      "Built applications for compliance operations, real estate workflows, lead prospecting, and workflow-centric tools with a strong emphasis on usability and business logic.",
+  },
 ];
 
 export default function Experience() {
   return (
-    <section id="experience" className="px-6 py-20 lg:px-10">
+    <section id="experience" className="section-shell px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
-          <p className="section-kicker">How I Work</p>
-          <h2 className="section-title">
-            From business requirements to working software.
-          </h2>
+          <p className="section-kicker">Experience</p>
+          <h2 className="section-title">Hands-on experience building business systems that need to work in the real world.</h2>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-3">
-          {workflow.map(([step, title, text]) => (
-            <motion.div
-              key={step}
+        <div className="space-y-5">
+          {experience.map((item, index) => (
+            <motion.article
+              key={item.role}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.45 }}
-              className="rounded-lg border border-white/10 bg-white/[0.04] p-5"
+              transition={{ duration: 0.45, delay: index * 0.06 }}
+              className="grid gap-5 rounded-[2rem] border border-white/10 bg-[#07131c]/90 p-6 md:grid-cols-[180px_1fr]"
             >
-              <p className="text-sm font-semibold text-mint">{step}</p>
-              <h3 className="mt-4 text-xl font-semibold text-white">{title}</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-400">{text}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-10 rounded-lg border border-white/10 bg-[#07131c]/90 p-6 shadow-soft">
-          <p className="section-kicker">Partner Advantage</p>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {advantages.map((item) => (
-              <div
-                key={item}
-                className="rounded-md border border-mint/15 bg-mint/10 px-4 py-3 text-sm text-slate-100"
-              >
-                {item}
+              <div>
+                <p className="text-xs uppercase tracking-[0.22em] text-mint">{item.period}</p>
               </div>
-            ))}
-          </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h3 className="text-2xl font-semibold text-white">{item.role}</h3>
+                  <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] uppercase tracking-[0.14em] text-slate-300">
+                    {item.company}
+                  </span>
+                </div>
+                <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
+                  {item.description}
+                </p>
+              </div>
+            </motion.article>
+          ))}
         </div>
       </div>
     </section>

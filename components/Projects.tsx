@@ -4,9 +4,9 @@ import { featuredProjects } from "@/data/projects";
 import { fetchGitHubRepos } from "@/lib/github";
 import { GitHubRepo, ProjectCard } from "@/types";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Code2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowUpRight, Code2, Github } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 
 function normalizeUrl(value: string) {
   try {
@@ -60,65 +60,66 @@ export default function Projects() {
   }, [repos]);
 
   return (
-    <section id="projects" className="px-6 py-20 lg:px-10">
+    <section id="projects" className="section-shell px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
           <p className="section-kicker">Selected Work</p>
-          <h2 className="section-title">
-            Compliance, property, and business operations.
-          </h2>
-          <p className="mt-4 leading-7 text-slate-400">
-            Software built around specific workflows, from running a CA practice
-            to finding a rental or qualifying the next sales lead.
+          <h2 className="section-title">Projects that solve real operational problems.</h2>
+          <p className="mt-4 max-w-2xl text-base leading-8 text-slate-400">
+            From compliance and CRM workflows to property platforms and lead tools,
+            each project is designed around the way businesses actually operate.
           </p>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
           {projects.map((project, index) => (
             <motion.article
-              key={`${project.slug}-${project.liveUrl}`}
+              key={`${project.slug}-${project.liveUrl || project.githubUrl || index}`}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                duration: 0.45,
-                delay: Math.min(index * 0.04, 0.2),
-              }}
-              className="flex min-h-[360px] flex-col rounded-lg border border-white/10 bg-[#07131c]/90 p-5 shadow-soft"
+              transition={{ duration: 0.45, delay: Math.min(index * 0.04, 0.2) }}
+              className="group flex min-h-[430px] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#07131c]/90 p-4 shadow-[0_30px_80px_rgba(2,8,18,0.16)] transition hover:-translate-y-1 hover:border-mint/30"
             >
               {project.image ? (
-                <Image
-                  src={project.image}
-                  alt={`${project.label} application interface`}
-                  width={1440}
-                  height={960}
-                  className="mb-5 aspect-[3/2] w-full rounded-md border border-white/10 object-contain"
-                />
+                <div className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-slate-950/60">
+                  <Image
+                    src={project.image}
+                    alt={`${project.label} application interface`}
+                    width={1440}
+                    height={960}
+                    className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
               ) : null}
-              <div className="mb-5 flex items-center justify-between gap-3">
-                <span className="rounded-full border border-mint/20 bg-mint/10 px-3 py-1 text-xs uppercase text-mint">
+
+              <div className="mt-5 flex items-center justify-between gap-3">
+                <span className="rounded-full border border-mint/20 bg-mint/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-mint">
                   {index < featuredProjects.length ? "Featured" : "More Work"}
                 </span>
-                <span className="text-xs text-slate-500">
-                  {project.stack[0]}
+                <span className="text-[11px] uppercase tracking-[0.16em] text-slate-500">
+                  {project.stack[0] || "Web App"}
                 </span>
               </div>
-              <h3 className="text-2xl font-semibold capitalize text-white">
+
+              <h3 className="mt-4 text-2xl font-semibold capitalize text-white">
                 {project.label}
               </h3>
               <p className="mt-4 flex-1 text-sm leading-7 text-slate-300">
                 {project.description}
               </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {project.stack.map((item) => (
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {project.stack.slice(0, 4).map((item) => (
                   <span
                     key={item}
-                    className="rounded-md border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300"
+                    className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1.5 text-[11px] tracking-wide text-slate-200"
                   >
                     {item}
                   </span>
                 ))}
               </div>
+
               <div className="mt-6 flex flex-wrap gap-3">
                 {project.liveUrl ? (
                   <a
@@ -137,7 +138,7 @@ export default function Projects() {
                     rel="noreferrer"
                     className="button-ghost inline-flex items-center gap-2 text-sm"
                   >
-                    Code <Code2 size={16} aria-hidden="true" />
+                    <Github size={16} aria-hidden="true" /> Code
                   </a>
                 ) : null}
               </div>
