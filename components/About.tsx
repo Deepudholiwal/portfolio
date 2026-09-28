@@ -2,7 +2,12 @@
 
 import { motion } from "framer-motion";
 
-const focus = ["Product Thinking", "Clean & Scalable Code", "AI Workflow Design", "Business-focused Solutions"];
+const focus = [
+  "Indian compliance workflows",
+  "CA firm operations",
+  "CRM implementation",
+  "Business automation",
+];
 
 export default function About() {
   return (
@@ -15,8 +20,10 @@ export default function About() {
           transition={{ duration: 0.7 }}
           className="space-y-4"
         >
-          <p className="section-kicker">Profile Telemetry</p>
-          <h2 className="section-title">AI-first product engineer.</h2>
+          <p className="section-kicker">About Deepak</p>
+          <h2 className="section-title">
+            The business rules are part of the product.
+          </h2>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -27,18 +34,27 @@ export default function About() {
         >
           <div className="space-y-5 text-base leading-8 text-slate-300">
             <p>
-              I build intelligent, production-ready software systems for startups and businesses. By combining software engineering fundamentals with product thinking and AI capabilities, I deliver high-performance applications that drive real business outcomes.
+              I build software for Indian businesses from Gurugram, Haryana.
+              My work spans CA practice management, rental platforms, lead
+              research, and CRM implementation, including Bitrix24.
             </p>
             <blockquote className="border-l-2 border-mint pl-5 text-lg text-white">
-              AI automates execution. Product engineering guarantees scale, maintainability, and impact.
+              Useful software starts with understanding the work people need to
+              complete.
             </blockquote>
             <p>
-              I help SaaS teams, agencies, and small businesses prototype rapidly and scale confidently, with every line of code written for clean architecture, security, and long-term maintainability.
+              GST, ITR, TDS, and ROC/MCA workflows bring specific requirements
+              to a product. I focus on translating those requirements into
+              usable screens, clear data models, and validation that fits local
+              formats, including PAN and amounts in lakhs and crores.
             </p>
           </div>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {focus.map((item) => (
-              <div key={item} className="rounded-lg border border-mint/15 bg-mint/10 p-4 text-sm text-slate-100">
+              <div
+                key={item}
+                className="rounded-lg border border-mint/15 bg-mint/10 p-4 text-sm text-slate-100"
+              >
                 {item}
               </div>
             ))}

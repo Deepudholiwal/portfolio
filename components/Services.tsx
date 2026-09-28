@@ -4,25 +4,49 @@ import { motion } from "framer-motion";
 
 const services = [
   {
-    title: "AI Development",
-    summary: "Custom intelligent solutions that use LLMs and agentic workflows to automate reasoning and decisions.",
-    items: ["Autonomous AI agents", "Conversational chatbots", "RAG workflows", "Custom LLM API integrations"]
+    title: "Compliance & CA Software",
+    summary:
+      "Business software shaped around the daily work of Indian accounting and tax practices.",
+    items: [
+      "GST, ITR & TDS workflows",
+      "ROC / MCA task management",
+      "Client workspaces",
+      "Indian data formats",
+    ],
   },
   {
-    title: "Full Stack Development",
-    summary: "Responsive, secure, production-ready applications with modern frontends and performant backends.",
-    items: ["SaaS MVP development", "Interactive dashboards", "Secure admin panels", "Clean REST APIs"]
+    title: "B2B SaaS & Real Estate",
+    summary:
+      "Full-stack products for property discovery, rental operations, and business teams.",
+    items: [
+      "Property search & listings",
+      "Owner / tenant workflows",
+      "Real-time messaging",
+      "Operational dashboards",
+    ],
   },
   {
     title: "Business Automation",
-    summary: "Connected systems and internal tools that replace repetitive manual work with reliable pipelines.",
-    items: ["Custom internal tools", "Workflow automation", "API and SaaS integrations", "Event orchestration"]
+    summary:
+      "Connected systems and internal tools that replace repetitive manual work with reliable pipelines.",
+    items: [
+      "Custom internal tools",
+      "Workflow automation",
+      "API and SaaS integrations",
+      "Event orchestration",
+    ],
   },
   {
-    title: "Technical Consulting",
-    summary: "Architecture and implementation strategy that reduces build risk and improves time-to-market.",
-    items: ["Architecture planning", "AI feasibility strategy", "Tech stack optimization", "Code quality advisory"]
-  }
+    title: "CRM & Bitrix24 Implementation",
+    summary:
+      "CRM configuration and integrations built around how your team handles leads and follow-ups.",
+    items: [
+      "Sales pipelines",
+      "Bitrix24 implementation",
+      "Lead capture integrations",
+      "Follow-up workflows",
+    ],
+  },
 ];
 
 export default function Services() {
@@ -45,8 +69,12 @@ export default function Services() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-2xl font-semibold text-white">{service.title}</h3>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">{service.summary}</p>
+                  <h3 className="text-2xl font-semibold text-white">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
+                    {service.summary}
+                  </p>
                 </div>
                 <span className="rounded-md border border-mint/20 bg-mint/10 px-3 py-2 text-sm font-semibold text-mint">
                   {String(index + 1).padStart(2, "0")}
@@ -54,7 +82,10 @@ export default function Services() {
               </div>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {service.items.map((item) => (
-                  <li key={item} className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-300">
+                  <li
+                    key={item}
+                    className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-300"
+                  >
                     {item}
                   </li>
                 ))}

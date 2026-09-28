@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "setup:local": "node scripts/setup-local.mjs && prisma generate && prisma migrate deploy",
     "dev": "next dev",
     "build": "prisma generate && next build",
     "vercel-build": "prisma generate && next build",

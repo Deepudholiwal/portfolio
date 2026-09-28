@@ -330,6 +330,17 @@ export default function AdminPage() {
                     </div>
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <label className="text-sm">
+                        Status
+                        <select
+                          className="input-field mt-2"
+                          value={selectedLead.status}
+                          disabled={loading}
+                          onChange={(event) => updateStatus(selectedLead.id, event.target.value)}
+                        >
+                          {statusOptions.map((status) => <option key={status} value={status}>{status}</option>)}
+                        </select>
+                      </label>
                       <button
                         type="button"
                         onClick={() => deleteLead(selectedLead.id)}

@@ -3,10 +3,19 @@
 import { useState, type FormEvent } from "react";
 
 const services = [
-  "AI Development",
-  "Full Stack Development",
+  "Web Development",
+  "Website Redesign",
+  "E-commerce Development",
+  "Frontend Development",
+  "Backend & API Development",
+  "Compliance & CA Software",
+  "B2B SaaS & Real Estate",
   "Business Automation",
-  "Technical Consulting"
+  "CRM & Bitrix24 Implementation",
+  "API & Third-party Integrations",
+  "Website Maintenance & Support",
+  "Technical Consulting",
+  "Other / Let's Discuss",
 ];
 
 export default function ContactForm() {
@@ -17,10 +26,11 @@ export default function ContactForm() {
     company: "",
     country: "",
     budget: "",
-    service: "AI Development",
-    message: ""
+    service: "Web Development",
+    message: "",
   });
   const [status, setStatus] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -28,28 +38,36 @@ export default function ContactForm() {
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus("Sending lead...");
+    if (sending) return;
+    setSending(true);
+    setStatus("Sending inquiry...");
 
-    const response = await fetch("/api/leads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    });
-
-    if (response.ok) {
-      setStatus("Lead captured. We will contact you soon.");
-      setForm({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        country: "",
-        budget: "",
-        service: "AI Development",
-        message: ""
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
-    } else {
-      setStatus("Unable to send lead. Please try again later.");
+
+      if (response.ok) {
+        setStatus("Thanks for your inquiry. I will be in touch.");
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          company: "",
+          country: "",
+          budget: "",
+          service: "Web Development",
+          message: "",
+        });
+      } else {
+        setStatus("Unable to send lead. Please try again later.");
+      }
+    } catch {
+      setStatus("Unable to connect. Please try again or contact me by email.");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -57,30 +75,25 @@ export default function ContactForm() {
     <section id="contact" className="px-6 py-20 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
-          <p className="section-kicker">Connection Channel</p>
-          <h2 className="section-title">Let&apos;s build something intelligent.</h2>
+          <p className="section-kicker">Contact</p>
+          <h2 className="section-title">Discuss a project.</h2>
           <p className="mt-4 leading-7 text-slate-400">
-            Whether it is an AI-powered application, a SaaS platform, or a full-stack product, I am interested in solving meaningful problems through technology.
+            Tell me about your business, the workflow you want to improve, and
+            your timeline.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3 text-sm">
-            <a className="button-ghost" href="mailto:deepakchandra4551@gmail.com">
-              deepakchandra4551@gmail.com
-            </a>
-            <a className="button-ghost" href="tel:+919120279300">
-              +91 9120279300
-            </a>
-            <a className="button-ghost" href="https://deepak-yadav-portfolio.dk4796804.chatgpt.site/" target="_blank" rel="noreferrer">
-              Resume
-            </a>
-          </div>
         </div>
         <div className="rounded-lg border border-white/10 bg-[#07131c]/90 p-6 shadow-soft">
-          <form className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]" onSubmit={submit}>
+          <form
+            className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]"
+            onSubmit={submit}
+          >
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <input
                   required
                   value={form.name}
+                  minLength={2}
+                  maxLength={100}
                   onChange={(e) => handleChange("name", e.target.value)}
                   placeholder="Name"
                   aria-label="Name"
@@ -100,6 +113,9 @@ export default function ContactForm() {
                 <input
                   required
                   value={form.phone}
+                  type="tel"
+                  minLength={6}
+                  maxLength={30}
                   onChange={(e) => handleChange("phone", e.target.value)}
                   placeholder="Phone"
                   aria-label="Phone"
@@ -147,16 +163,27 @@ export default function ContactForm() {
               <textarea
                 required
                 value={form.message}
+                maxLength={2000}
                 onChange={(e) => handleChange("message", e.target.value)}
                 rows={10}
                 placeholder="Tell me about your project, requirements, or timeline."
                 aria-label="Message"
                 className="input-field min-h-[320px] resize-none"
               />
-              <button type="submit" className="button-primary w-full">
-                Submit Inquiry
+              <button
+                type="submit"
+                disabled={sending}
+                className="button-primary w-full disabled:opacity-60"
+              >
+                {sending ? "Sending..." : "Send project details"}
               </button>
-              {status ? <p className="text-sm text-slate-300">{status}</p> : null}
+              <p
+                role="status"
+                aria-live="polite"
+                className="text-sm text-slate-300"
+              >
+                {status}
+              </p>
             </div>
           </form>
         </div>

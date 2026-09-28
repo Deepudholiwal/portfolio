@@ -4,31 +4,50 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_1fr]">
         <div>
           <h2 className="text-2xl font-semibold text-white">
-            Deepak<span className="text-mint">.</span>
+            Deepak Yadav<span className="text-mint">.</span>
           </h2>
+          <p className="mt-2 text-sm font-medium text-mint">
+            Bitrix24 Support Engineer | Full Stack Web Developer
+          </p>
           <p className="mt-3 max-w-md leading-7">
-            Designed with curiosity. Built with engineering. Accelerated by AI. Shipped with confidence.
+            B2B SaaS, compliance workflows, and CRM implementation for Indian
+            businesses.
           </p>
         </div>
-        <div className="grid gap-3 text-sm md:justify-end md:text-right">
-          <p>Noida, Uttar Pradesh, India</p>
-          <a href="mailto:deepakchandra4551@gmail.com" className="hover:text-mint">
-            deepakchandra4551@gmail.com
+        <address className="grid min-w-0 gap-3 text-sm not-italic md:justify-end md:text-right">
+          <p>Gurugram, Haryana 122506</p>
+          <a
+            href="mailto:dk4796804@gmail.com"
+            className="break-words hover:text-mint"
+          >
+            dk4796804@gmail.com
           </a>
-          <a href="tel:+919120279300" className="hover:text-mint">
-            +91 9120279300
+          <a href="tel:+918307928412" className="hover:text-mint">
+            +91 8307928412
           </a>
           <div className="flex flex-wrap gap-4 md:justify-end">
-            <a href="https://github.com/Deepudholiwal" target="_blank" rel="noreferrer" className="hover:text-mint">
+            <a
+              href="https://github.com/Deepudholiwal"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-mint"
+            >
               GitHub
             </a>
-            <a href="https://wa.me/919120279300" target="_blank" rel="noreferrer" className="hover:text-mint">
-              WhatsApp
+            <a
+              href="https://linkedin.com/in/deepak-yadav01"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-mint"
+            >
+              LinkedIn
             </a>
           </div>
-        </div>
+        </address>
       </div>
-      <p className="mx-auto mt-8 max-w-7xl text-sm text-slate-500">© 2026 Deepak Chandra Maurya. All rights reserved.</p>
+      <p className="mx-auto mt-8 max-w-7xl text-sm text-slate-500">
+        &copy; {new Date().getFullYear()} Deepak Yadav. All rights reserved.
+      </p>
     </footer>
   );
 }

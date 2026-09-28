@@ -12,18 +12,16 @@ A premium portfolio and lead-generation website built with Next.js, TypeScript, 
 - SEO-ready metadata, `robots.txt`, and `sitemap.xml`
 
 ## Setup
-1. Copy `.env.example` to `.env`.
-2. Set `DATABASE_URL="file:./dev.db"` and `ADMIN_PASSWORD`.
-3. Install dependencies:
+1. Install dependencies:
    ```bash
    npm install
    ```
-4. Generate Prisma client and migrate:
+2. Create local configuration and initialize the database:
    ```bash
-   npm run prisma:generate
-   npm run prisma:migrate
+   npm run setup:local
    ```
-5. Run locally:
+   This preserves an existing `.env`. For a new setup it generates an admin password in `.env` and uses a local SQLite database.
+3. Run locally:
    ```bash
    npm run dev
    ```

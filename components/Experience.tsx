@@ -3,23 +3,47 @@
 import { motion } from "framer-motion";
 
 const workflow = [
-  ["01", "Discovery", "Analyze product specs, user journeys, and business goals to outline the right scope."],
-  ["02", "Architecture", "Design schema models, API patterns, and component states before implementation."],
-  ["03", "Development", "Write clean, typed, modular full-stack code using Next.js, React, and TypeScript."],
-  ["04", "AI Integration", "Integrate LLMs, prompt validation, agent flows, and retrieval-ready data paths."],
-  ["05", "Testing", "Review layout stability, schemas, API behavior, and production readiness."],
-  ["06", "Deployment", "Ship optimized builds to Vercel or Docker and verify performance and SEO."]
+  [
+    "01",
+    "Discovery",
+    "Analyze product specs, user journeys, and business goals to outline the right scope.",
+  ],
+  [
+    "02",
+    "Architecture",
+    "Design schema models, API patterns, and component states before implementation.",
+  ],
+  [
+    "03",
+    "Development",
+    "Write clean, typed, modular full-stack code using Next.js, React, and TypeScript.",
+  ],
+  [
+    "04",
+    "Integration",
+    "Connect CRM tools, business APIs, and automation to the team's daily workflow.",
+  ],
+  [
+    "05",
+    "Testing",
+    "Review layout stability, schemas, API behavior, and production readiness.",
+  ],
+  [
+    "06",
+    "Deployment",
+    "Ship optimized builds to Vercel or Docker and verify performance and SEO.",
+  ],
 ];
 
 const advantages = [
   "Production-ready Architecture",
   "Scalable Systems",
   "Modern UI/UX",
-  "AI-first Workflow",
+  "AI-assisted Delivery",
   "Rapid MVP Development",
   "Clean Maintainable Code",
   "Business-focused Solutions",
-  "Performance Optimization"
+  "Performance Optimization",
 ];
 
 export default function Experience() {
@@ -27,8 +51,10 @@ export default function Experience() {
     <section id="experience" className="px-6 py-20 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
-          <p className="section-kicker">Product Lifecycle</p>
-          <h2 className="section-title">A practical workflow for intelligent software.</h2>
+          <p className="section-kicker">How I Work</p>
+          <h2 className="section-title">
+            From business requirements to working software.
+          </h2>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-3">
@@ -52,7 +78,10 @@ export default function Experience() {
           <p className="section-kicker">Partner Advantage</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {advantages.map((item) => (
-              <div key={item} className="rounded-md border border-mint/15 bg-mint/10 px-4 py-3 text-sm text-slate-100">
+              <div
+                key={item}
+                className="rounded-md border border-mint/15 bg-mint/10 px-4 py-3 text-sm text-slate-100"
+              >
                 {item}
               </div>
             ))}

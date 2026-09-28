@@ -13,8 +13,8 @@ export default function Home() {
     <main>
       <VisitorTracker />
       <Hero />
-      <Services />
       <Projects />
+      <Services />
       <About />
       <Experience />
       <SkillsSphere />

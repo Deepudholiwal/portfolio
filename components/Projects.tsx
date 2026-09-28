@@ -6,6 +6,7 @@ import { GitHubRepo, ProjectCard } from "@/types";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Code2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 
 function normalizeUrl(value: string) {
   try {
@@ -20,27 +21,25 @@ function repoToProject(repo: GitHubRepo): ProjectCard {
   return {
     slug: repo.name.toLowerCase(),
     label: repo.name.replace(/[-_]/g, " "),
-    description: repo.description || "Live public project from GitHub with a verified homepage deployment.",
+    description:
+      repo.description || "Explore the application and its source code.",
     stack: [repo.language || "Web App", "GitHub", "Live Deployment"],
     liveUrl: repo.homepage,
-    githubUrl: repo.url
+    githubUrl: repo.url,
   };
 }
 
 export default function Projects() {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
 
-    fetchGitHubRepos(process.env.NEXT_PUBLIC_GITHUB_USERNAME || "Deepudholiwal")
-      .then((data) => {
-        if (mounted) setRepos(data);
-      })
-      .finally(() => {
-        if (mounted) setLoading(false);
-      });
+    fetchGitHubRepos(
+      process.env.NEXT_PUBLIC_GITHUB_USERNAME || "Deepudholiwal",
+    ).then((data) => {
+      if (mounted) setRepos(data);
+    });
 
     return () => {
       mounted = false;
@@ -48,7 +47,11 @@ export default function Projects() {
   }, []);
 
   const projects = useMemo(() => {
-    const featuredUrls = new Set(featuredProjects.map((project) => normalizeUrl(project.liveUrl)));
+    const featuredUrls = new Set(
+      featuredProjects.flatMap((project) =>
+        project.liveUrl ? [normalizeUrl(project.liveUrl)] : [],
+      ),
+    );
     const githubProjects = repos
       .filter((repo) => !featuredUrls.has(normalizeUrl(repo.homepage)))
       .map(repoToProject);
@@ -60,10 +63,13 @@ export default function Projects() {
     <section id="projects" className="px-6 py-20 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl">
-          <p className="section-kicker">AI & Software Products</p>
-          <h2 className="section-title">Live products and GitHub-backed deployments.</h2>
+          <p className="section-kicker">Selected Work</p>
+          <h2 className="section-title">
+            Compliance, property, and business operations.
+          </h2>
           <p className="mt-4 leading-7 text-slate-400">
-            Featured work stays visible even when GitHub is unavailable. Public repositories appear only when their GitHub Website field points to a live URL.
+            Software built around specific workflows, from running a CA practice
+            to finding a rental or qualifying the next sales lead.
           </p>
         </div>
 
@@ -74,30 +80,63 @@ export default function Projects() {
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.45, delay: Math.min(index * 0.04, 0.2) }}
+              transition={{
+                duration: 0.45,
+                delay: Math.min(index * 0.04, 0.2),
+              }}
               className="flex min-h-[360px] flex-col rounded-lg border border-white/10 bg-[#07131c]/90 p-5 shadow-soft"
             >
+              {project.image ? (
+                <Image
+                  src={project.image}
+                  alt={`${project.label} application interface`}
+                  width={1440}
+                  height={960}
+                  className="mb-5 aspect-[3/2] w-full rounded-md border border-white/10 object-contain"
+                />
+              ) : null}
               <div className="mb-5 flex items-center justify-between gap-3">
                 <span className="rounded-full border border-mint/20 bg-mint/10 px-3 py-1 text-xs uppercase text-mint">
-                  {index < featuredProjects.length ? "Featured" : "GitHub Live"}
+                  {index < featuredProjects.length ? "Featured" : "More Work"}
                 </span>
-                <span className="text-xs text-slate-500">{project.stack[0]}</span>
+                <span className="text-xs text-slate-500">
+                  {project.stack[0]}
+                </span>
               </div>
-              <h3 className="text-2xl font-semibold capitalize text-white">{project.label}</h3>
-              <p className="mt-4 flex-1 text-sm leading-7 text-slate-300">{project.description}</p>
+              <h3 className="text-2xl font-semibold capitalize text-white">
+                {project.label}
+              </h3>
+              <p className="mt-4 flex-1 text-sm leading-7 text-slate-300">
+                {project.description}
+              </p>
               <div className="mt-6 flex flex-wrap gap-2">
                 {project.stack.map((item) => (
-                  <span key={item} className="rounded-md border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">
+                  <span
+                    key={item}
+                    className="rounded-md border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300"
+                  >
                     {item}
                   </span>
                 ))}
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href={project.liveUrl} target="_blank" rel="noreferrer" className="button-secondary inline-flex items-center gap-2 text-sm">
-                  Live <ArrowUpRight size={16} aria-hidden="true" />
-                </a>
+                {project.liveUrl ? (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button-secondary inline-flex items-center gap-2 text-sm"
+                  >
+                    Live <ArrowUpRight size={16} aria-hidden="true" />
+                  </a>
+                ) : null}
                 {project.githubUrl ? (
-                  <a href={project.githubUrl} target="_blank" rel="noreferrer" className="button-ghost inline-flex items-center gap-2 text-sm">
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button-ghost inline-flex items-center gap-2 text-sm"
+                  >
                     Code <Code2 size={16} aria-hidden="true" />
                   </a>
                 ) : null}
@@ -105,12 +144,6 @@ export default function Projects() {
             </motion.article>
           ))}
         </div>
-
-        {!loading && repos.length === 0 ? (
-          <p className="mt-6 rounded-lg border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-400">
-            GitHub repositories could not be loaded right now, so only the featured live projects are shown.
-          </p>
-        ) : null}
       </div>
     </section>
   );

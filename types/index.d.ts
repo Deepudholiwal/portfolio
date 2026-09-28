@@ -3,7 +3,7 @@ export type ProjectCard = {
   label: string;
   description: string;
   stack: string[];
-  liveUrl: string;
+  liveUrl?: string;
   githubUrl?: string;
   image?: string;
 };
