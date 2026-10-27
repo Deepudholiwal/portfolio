@@ -1,50 +1,27 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db";
+import { leads } from "@/db/schema";
 import { leadSchema } from "@/lib/validators";
 
-async function sendEmailNotification(data: any) {
-  const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY || "";
-  if (!apiKey) return;
-  return;
-}
-
-async function sendWhatsAppNotification(data: any) {
-  return;
-}
-
-async function sendTelegramAlert(data: any) {
-  return;
-}
-
-async function createCRMLead(data: any) {
-  return;
-}
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const payload = await request.json().catch(() => null);
+  const result = leadSchema.safeParse(payload);
+  if (!result.success) {
+    return NextResponse.json(
+      { success: false, error: result.error.issues[0]?.message || "Please check your form details." },
+      { status: 400 },
+    );
+  }
+
   try {
-    const payload = await request.json();
-    const validated = leadSchema.parse(payload);
-
-    const lead = await prisma.lead.create({ data: {
-      name: validated.name,
-      email: validated.email,
-      phone: validated.phone,
-      company: validated.company || null,
-      country: validated.country || null,
-      budget: validated.budget || null,
-      service: validated.service,
-      message: validated.message || null
-    }});
-
-    await Promise.all([
-      sendEmailNotification(lead),
-      sendWhatsAppNotification(lead),
-      sendTelegramAlert(lead),
-      createCRMLead(lead)
-    ]);
-
+    const [lead] = await db.insert(leads).values(result.data).returning();
     return NextResponse.json({ success: true, lead }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error?.message || "Invalid request." }, { status: 400 });
+  } catch {
+    return NextResponse.json(
+      { success: false, error: "Unable to save your inquiry right now. Please try again shortly or email me directly." },
+      { status: 503 },
+    );
   }
 }

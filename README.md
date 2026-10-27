@@ -1,12 +1,12 @@
 # Deepak Yadav Premium Portfolio
 
-A premium portfolio and lead-generation website built with Next.js, TypeScript, Tailwind CSS, Framer Motion, and Prisma.
+A premium portfolio and lead-generation website built with Next.js, TypeScript, Tailwind CSS, Framer Motion, and Netlify Database with Drizzle ORM.
 
 ## Features
 - Dark futuristic motion-driven landing page
 - Hero section with immersive 3D visuals and AI storytelling
 - Services, projects, experience, skills, testimonials, and contact sections
-- Lead capture API with database persistence via Prisma + SQLite
+- Lead capture API with database persistence via Netlify Database (Postgres)
 - Secure admin dashboard for lead management
 - Visitor tracking endpoint ready for analytics
 - SEO-ready metadata, `robots.txt`, and `sitemap.xml`
@@ -16,14 +16,14 @@ A premium portfolio and lead-generation website built with Next.js, TypeScript, 
    ```bash
    npm install
    ```
-2. Create local configuration and initialize the database:
+2. Create local admin configuration:
    ```bash
-   npm run setup:local
+   node scripts/setup-local.mjs
    ```
-   This preserves an existing `.env`. For a new setup it generates an admin password in `.env` and uses a local SQLite database.
+   This preserves an existing `.env`. For a new setup it generates an admin password in `.env`. The legacy SQLite setup is no longer used by the application endpoints.
 3. Run locally:
    ```bash
-   npm run dev
+   netlify dev --port 8889
    ```
 
 ## Admin Panel
@@ -36,3 +36,6 @@ A premium portfolio and lead-generation website built with Next.js, TypeScript, 
 - Replace `NEXT_PUBLIC_SITE_URL` with the production domain.
 - Add GA4 and Microsoft Clarity IDs to `.env`.
 - Update project URLs and images for real deployment.
+
+## Persistent storage
+Contact submissions, admin lead management, and visitor tracking use the managed Postgres database. The schema is defined in `db/schema.ts`, and Netlify applies the generated migrations in `netlify/database/migrations` during deployment. The previous Prisma/SQLite files are legacy tooling, not the active storage path. Existing SQLite records are not automatically imported.

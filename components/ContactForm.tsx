@@ -42,12 +42,13 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (response.ok) {
+      const payload = await response.json().catch(() => null);
+      if (response.ok && payload?.success) {
         setStatus("✓ Message sent! I'll be in touch within 24 hours.");
         setSuccess(true);
         setForm({ name: "", email: "", phone: "", company: "", country: "", budget: "", service: "Web Development", message: "" });
       } else {
-        setStatus("Unable to send. Please try again later.");
+        setStatus(payload?.error || "Unable to send. Please try again later.");
       }
     } catch {
       setStatus("Connection error. Please email me directly.");
@@ -160,7 +161,7 @@ export default function ContactForm() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <div className="glass-panel rounded-2xl p-7 sm:p-8">
-              <form onSubmit={submit} noValidate className="space-y-4">
+              <form onSubmit={submit} className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
                     <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Name *</label>
