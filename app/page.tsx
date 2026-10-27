@@ -6,20 +6,28 @@ import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
 import Services from "@/components/Services";
 import SkillsSphere from "@/components/SkillsSphere";
+import Testimonials from "@/components/Testimonials";
 import VisitorTracker from "@/components/VisitorTracker";
+import CursorGlow from "@/components/CursorGlow";
+import ParticleCanvas from "@/components/ParticleCanvas";
 
 export default function Home() {
   return (
-    <main>
-      <VisitorTracker />
-      <Hero />
-      <Projects />
-      <Services />
-      <About />
-      <Experience />
-      <SkillsSphere />
-      <ContactForm />
-      <Footer />
-    </main>
+    <>
+      <CursorGlow />
+      <ParticleCanvas />
+      <main className="relative z-10">
+        <VisitorTracker />
+        <Hero />
+        <About />
+        <SkillsSphere />
+        <Projects />
+        <Experience />
+        <Services />
+        <Testimonials />
+        <ContactForm />
+        <Footer />
+      </main>
+    </>
   );
 }

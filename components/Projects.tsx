@@ -1,150 +1,170 @@
 "use client";
 
-import { featuredProjects } from "@/data/projects";
-import { fetchGitHubRepos } from "@/lib/github";
-import { GitHubRepo, ProjectCard } from "@/types";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Code2, Github } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
 
-function normalizeUrl(value: string) {
-  try {
-    const url = new URL(value);
-    return `${url.protocol}//${url.hostname}${url.pathname.replace(/\/$/, "")}`.toLowerCase();
-  } catch {
-    return value.replace(/\/$/, "").toLowerCase();
-  }
-}
-
-function repoToProject(repo: GitHubRepo): ProjectCard {
-  return {
-    slug: repo.name.toLowerCase(),
-    label: repo.name.replace(/[-_]/g, " "),
+const projects = [
+  {
+    number: "01",
+    label: "CA Suite Pro",
     description:
-      repo.description || "Explore the application and its source code.",
-    stack: [repo.language || "Web App", "GitHub", "Live Deployment"],
-    liveUrl: repo.homepage,
-    githubUrl: repo.url,
-  };
-}
+      "Comprehensive software for Indian CA firm operations — GST, ITR, TDS, and ROC/MCA workflows unified into one product. Built with PAN formats and Indian financial expressions (lakhs/crores) natively.",
+    stack: ["Next.js", "TypeScript", "Prisma", "MySQL", "Compliance"],
+    highlight: "SaaS · Fintech",
+    color: "#f5b944",
+  },
+  {
+    number: "02",
+    label: "GharDirect",
+    description:
+      "A direct-to-owner rental platform built with the MERN stack. Supports location and rent filters for property discovery, with Socket.IO for real-time owner-tenant conversations.",
+    stack: ["React", "Node.js", "Express", "MongoDB", "Socket.IO"],
+    highlight: "Real Estate · MERN",
+    color: "#ff9f43",
+  },
+  {
+    number: "03",
+    label: "Lead Scanner",
+    description:
+      "B2B prospecting tool that searches businesses by keyword and location using Google Places API, scores their web presence, and exports results to CSV. Built for sales teams.",
+    stack: ["Next.js", "Google Places API", "CSV Export", "B2B"],
+    highlight: "Sales Tool · API",
+    color: "#ffd166",
+  },
+  {
+    number: "04",
+    label: "Bitrix24 CRM Workflows",
+    description:
+      "Custom CRM pipelines, business process automation, and third-party integrations for lead handling, approval flows, and team operations. Configured for multiple client environments.",
+    stack: ["Bitrix24", "CRM", "Automation", "REST API", "Webhooks"],
+    highlight: "CRM · Enterprise",
+    color: "#d4972a",
+  },
+];
 
 export default function Projects() {
-  const [repos, setRepos] = useState<GitHubRepo[]>([]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    fetchGitHubRepos(
-      process.env.NEXT_PUBLIC_GITHUB_USERNAME || "Deepudholiwal",
-    ).then((data) => {
-      if (mounted) setRepos(data);
-    });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const projects = useMemo(() => {
-    const featuredUrls = new Set(
-      featuredProjects.flatMap((project) =>
-        project.liveUrl ? [normalizeUrl(project.liveUrl)] : [],
-      ),
-    );
-    const githubProjects = repos
-      .filter((repo) => !featuredUrls.has(normalizeUrl(repo.homepage)))
-      .map(repoToProject);
-
-    return [...featuredProjects, ...githubProjects];
-  }, [repos]);
-
   return (
-    <section id="projects" className="section-shell px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-12 max-w-3xl">
-          <p className="section-kicker">Selected Work</p>
-          <h2 className="section-title">Projects that solve real operational problems.</h2>
-          <p className="mt-4 max-w-2xl text-base leading-8 text-slate-400">
-            From compliance and CRM workflows to property platforms and lead tools,
-            each project is designed around the way businesses actually operate.
-          </p>
-        </div>
+    <section id="projects" className="section-shell px-4 py-28 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="orb orb-amber absolute bottom-[10%] left-[-5%] w-[400px] h-[400px] opacity-30" />
+      </div>
 
-        <div className="grid gap-5 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <motion.article
-              key={`${project.slug}-${project.liveUrl || project.githubUrl || index}`}
-              initial={{ opacity: 0, y: 18 }}
+      <div className="mx-auto max-w-7xl relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <p className="section-kicker">Featured Projects</p>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mt-4">
+            <h2 className="section-title">
+              Work that <span className="gradient-text">ships.</span>
+            </h2>
+            <a
+              href="https://github.com/Deepudholiwal"
+              target="_blank"
+              rel="noreferrer"
+              className="button-ghost text-sm flex-shrink-0 self-start sm:self-auto"
+            >
+              <Github size={15} /> All Projects
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Project Cards Grid */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {projects.map((p, i) => (
+            <motion.div
+              key={p.label}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.45, delay: Math.min(index * 0.04, 0.2) }}
-              className="group flex min-h-[430px] flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#07131c]/90 p-4 shadow-[0_30px_80px_rgba(2,8,18,0.16)] transition hover:-translate-y-1 hover:border-mint/30"
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="project-card group cursor-pointer"
             >
-              {project.image ? (
-                <div className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-slate-950/60">
-                  <Image
-                    src={project.image}
-                    alt={`${project.label} application interface`}
-                    width={1440}
-                    height={960}
-                    className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                  />
+              <div className="p-7">
+                {/* Card header */}
+                <div className="flex items-start justify-between gap-4 mb-5">
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <span
+                        className="text-3xl font-black leading-none"
+                        style={{ color: `${p.color}30`, WebkitTextStroke: `1px ${p.color}40` }}
+                      >
+                        {p.number}
+                      </span>
+                      <span
+                        className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border"
+                        style={{
+                          color: p.color,
+                          background: `${p.color}12`,
+                          borderColor: `${p.color}30`,
+                        }}
+                      >
+                        {p.highlight}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white group-hover:text-gold transition-colors duration-300">
+                      {p.label}
+                    </h3>
+                  </div>
+                  <div
+                    className="flex-shrink-0 flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-300 group-hover:scale-110"
+                    style={{ borderColor: `${p.color}40`, background: `${p.color}10` }}
+                  >
+                    <ArrowUpRight size={16} style={{ color: p.color }} className="group-hover:rotate-12 transition-transform duration-300" />
+                  </div>
                 </div>
-              ) : null}
 
-              <div className="mt-5 flex items-center justify-between gap-3">
-                <span className="rounded-full border border-mint/20 bg-mint/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-mint">
-                  {index < featuredProjects.length ? "Featured" : "More Work"}
-                </span>
-                <span className="text-[11px] uppercase tracking-[0.16em] text-slate-500">
-                  {project.stack[0] || "Web App"}
-                </span>
+                {/* Description */}
+                <p className="text-slate-400 text-sm leading-7 mb-6">{p.description}</p>
+
+                {/* Divider */}
+                <div className="h-px mb-5" style={{ background: `linear-gradient(90deg, ${p.color}25, transparent)` }} />
+
+                {/* Stack */}
+                <div className="flex flex-wrap gap-2">
+                  {p.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-xs font-medium px-2.5 py-1 rounded-lg border"
+                      style={{
+                        color: `${p.color}cc`,
+                        background: `${p.color}08`,
+                        borderColor: `${p.color}20`,
+                      }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <h3 className="mt-4 text-2xl font-semibold capitalize text-white">
-                {project.label}
-              </h3>
-              <p className="mt-4 flex-1 text-sm leading-7 text-slate-300">
-                {project.description}
-              </p>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {project.stack.slice(0, 4).map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1.5 text-[11px] tracking-wide text-slate-200"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                {project.liveUrl ? (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="button-secondary inline-flex items-center gap-2 text-sm"
-                  >
-                    Live <ArrowUpRight size={16} aria-hidden="true" />
-                  </a>
-                ) : null}
-                {project.githubUrl ? (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="button-ghost inline-flex items-center gap-2 text-sm"
-                  >
-                    <Github size={16} aria-hidden="true" /> Code
-                  </a>
-                ) : null}
-              </div>
-            </motion.article>
+              {/* Bottom accent bar */}
+              <div
+                className="h-1 w-0 group-hover:w-full transition-all duration-500 ease-out"
+                style={{ background: `linear-gradient(90deg, ${p.color}, transparent)` }}
+              />
+            </motion.div>
           ))}
         </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-slate-500 text-sm mb-4">Interested in working together on something similar?</p>
+          <a href="#contact" className="button-primary">
+            Start a Project <ExternalLink size={15} />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,15 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-const adminPassword = process.env.ADMIN_PASSWORD || "";
-
-function authorize(request: Request) {
-  const password = request.headers.get("x-admin-password");
-  return password === adminPassword && adminPassword.length > 0;
-}
+import { hasValidAdminSession } from "@/lib/admin-auth";
 
 export async function GET(request: Request) {
-  if (!authorize(request)) {
+  if (!hasValidAdminSession(request)) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
@@ -18,7 +12,7 @@ export async function GET(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  if (!authorize(request)) {
+  if (!hasValidAdminSession(request)) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
@@ -33,7 +27,7 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!authorize(request)) {
+  if (!hasValidAdminSession(request)) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 

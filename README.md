@@ -27,8 +27,10 @@ A premium portfolio and lead-generation website built with Next.js, TypeScript, 
    ```
 
 ## Admin Panel
-- Visit `/admin`
+- Visit `/admin` or `/datasubmit` to view and manage form submissions
 - Use the `ADMIN_PASSWORD` from `.env`
+- Submission details are password-protected and are not publicly accessible.
+- A successful login stays active for 7 days, including after a page refresh. The dashboard checks for new submissions automatically every 3 seconds.
 
 ## Notes
 - Replace `NEXT_PUBLIC_SITE_URL` with the production domain.

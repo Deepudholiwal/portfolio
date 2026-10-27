@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 
 const statusOptions = ["New", "Contacted", "Qualified", "Closed"];
 
@@ -30,16 +30,12 @@ function formatDate(dateString: string) {
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [sessionChecked, setSessionChecked] = useState(false);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
-
-  const authHeaders = useMemo(
-    () => ({ "x-admin-password": password }),
-    [password]
-  );
 
   const leadSummary = useMemo(() => {
     const counts = { New: 0, Contacted: 0, Qualified: 0, Closed: 0 }; 
@@ -62,18 +58,22 @@ export default function AdminPage() {
     );
   }, [leads, query]);
 
-  const loadLeads = async () => {
-    setLoading(true);
+  const loadLeads = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const response = await fetch("/api/admin/leads", {
         method: "GET",
-        headers: authHeaders
+        cache: "no-store",
       });
 
       const payload = await response.json().catch(() => null);
       if (!response.ok) {
-        setIsAuthorized(false);
-        setError(payload?.error || `Admin API responded with ${response.status}`);
+        if (response.status === 401) setIsAuthorized(false);
+        setError(
+          response.status === 401
+            ? null
+            : payload?.error || `Admin API responded with ${response.status}`,
+        );
         return;
       }
 
@@ -83,22 +83,62 @@ export default function AdminPage() {
         return;
       }
 
-      setLeads(payload.leads || []);
-      setSelectedLead(payload.leads?.[0] ?? null);
+      const nextLeads: Lead[] = payload.leads || [];
+      setLeads(nextLeads);
+      setSelectedLead((current) =>
+        nextLeads.find((lead) => lead.id === current?.id) ?? nextLeads[0] ?? null,
+      );
       setIsAuthorized(true);
       setError(null);
-    } catch (err: any) {
-      setIsAuthorized(false);
-      setError(err?.message ? `Admin API error: ${err.message}` : "Unable to connect to admin API.");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? `Admin API error: ${err.message}`
+          : "Unable to connect to admin API.",
+      );
     } finally {
-      setLoading(false);
+      setSessionChecked(true);
+      if (!silent) setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    void loadLeads(true);
+  }, [loadLeads]);
+
+  useEffect(() => {
+    if (!isAuthorized) return;
+    const intervalId = window.setInterval(() => {
+      void loadLeads(true);
+    }, 3000);
+    return () => window.clearInterval(intervalId);
+  }, [isAuthorized, loadLeads]);
 
   const handleAuth = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
-    await loadLeads();
+    setLoading(true);
+    try {
+      const response = await fetch("/api/admin/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) {
+        setError(payload?.error || `Admin API responded with ${response.status}`);
+        return;
+      }
+      await loadLeads(true);
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? `Admin API error: ${err.message}`
+          : "Unable to connect to admin API.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateStatus = async (id: string, status: string) => {
@@ -106,10 +146,7 @@ export default function AdminPage() {
     try {
       const response = await fetch("/api/admin/leads", {
         method: "PATCH",
-        headers: {
-          ...authHeaders,
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status })
       });
       const payload = await response.json().catch(() => null);
@@ -130,10 +167,7 @@ export default function AdminPage() {
     try {
       const response = await fetch("/api/admin/leads", {
         method: "DELETE",
-        headers: {
-          ...authHeaders,
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id })
       });
       const payload = await response.json().catch(() => null);
@@ -149,12 +183,21 @@ export default function AdminPage() {
     }
   };
 
-  const handleLogout = () => {
-    setPassword("");
-    setLeads([]);
-    setSelectedLead(null);
-    setIsAuthorized(false);
-    setError(null);
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/admin/session", { method: "DELETE" });
+      if (!response.ok) throw new Error("Unable to end admin session.");
+      setPassword("");
+      setLeads([]);
+      setSelectedLead(null);
+      setIsAuthorized(false);
+      setError(null);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Unable to log out.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,7 +209,11 @@ export default function AdminPage() {
           <p className="mt-4 max-w-3xl text-slate-400">A polished admin dashboard with search, lead details, status controls, and quick metrics designed for real lead management.</p>
         </div>
 
-        {!isAuthorized ? (
+        {!sessionChecked ? (
+          <div className="glass-panel rounded-[32px] border border-white/10 bg-slate-950/80 p-8 text-slate-300 shadow-soft">
+            Checking admin session…
+          </div>
+        ) : !isAuthorized ? (
           <form className="glass-panel rounded-[32px] border border-white/10 bg-slate-950/80 p-8 shadow-soft" onSubmit={handleAuth}>
             <div className="grid gap-5 sm:grid-cols-[1fr_auto]">
               <input
@@ -211,10 +258,11 @@ export default function AdminPage() {
                   <div>
                     <p className="text-sm uppercase tracking-[0.28em] text-cyan-300/80">Lead list</p>
                     <h2 className="mt-2 text-2xl font-semibold text-white">All leads</h2>
+                    <p className="mt-1 text-sm text-slate-400">New submissions appear automatically.</p>
                   </div>
                   <button
                     type="button"
-                    onClick={loadLeads}
+                    onClick={() => loadLeads()}
                     className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white transition hover:bg-white/10"
                   >
                     Refresh
