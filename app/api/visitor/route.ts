@@ -1,23 +1,19 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db";
+import { visitors } from "@/db/schema";
 import { visitorSchema } from "@/lib/validators";
 
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
+  const result = visitorSchema.safeParse(await request.json().catch(() => null));
+  if (!result.success) {
+    return NextResponse.json({ success: false, error: "Invalid visitor request." }, { status: 400 });
+  }
   try {
-    const payload = await request.json();
-    const validated = visitorSchema.parse(payload);
-
-    await prisma.visitor.create({ data: {
-      page: validated.page,
-      referrer: validated.referrer || null,
-      ip: validated.ip || null,
-      userAgent: validated.userAgent || null,
-      country: validated.country || null,
-      city: validated.city || null
-    }});
-
+    await db.insert(visitors).values(result.data);
     return NextResponse.json({ success: true }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error?.message || "Invalid request." }, { status: 400 });
+  } catch {
+    return NextResponse.json({ success: false, error: "Unable to record visit." }, { status: 503 });
   }
 }
