@@ -398,7 +398,7 @@ export default function AdminPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={loadLeads}
+                        onClick={() => loadLeads()}
                         disabled={loading}
                         className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
                       >
