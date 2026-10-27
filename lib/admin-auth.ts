@@ -7,6 +7,10 @@ function getAdminPassword() {
   return process.env.ADMIN_PASSWORD || "";
 }
 
+export function isAdminLoginConfigured() {
+  return Boolean(getAdminPassword());
+}
+
 export function isAdminPasswordValid(password: unknown) {
   const expected = getAdminPassword();
   if (typeof password !== "string" || !expected) return false;

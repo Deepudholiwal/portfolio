@@ -7,8 +7,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
-  const leads = await prisma.lead.findMany({ orderBy: { createdAt: "desc" } });
-  return NextResponse.json({ success: true, leads });
+  try {
+    const leads = await prisma.lead.findMany({ orderBy: { createdAt: "desc" } });
+    return NextResponse.json({ success: true, leads });
+  } catch {
+    return NextResponse.json(
+      { success: false, error: "You are signed in, but leads could not be loaded. Please try refreshing the lead list." },
+      { status: 503 },
+    );
+  }
 }
 
 export async function PATCH(request: Request) {
