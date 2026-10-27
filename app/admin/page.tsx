@@ -78,7 +78,6 @@ export default function AdminPage() {
       }
 
       if (!payload?.success) {
-        setIsAuthorized(false);
         setError(payload?.error || "Unable to load leads.");
         return;
       }
@@ -88,7 +87,6 @@ export default function AdminPage() {
       setSelectedLead((current) =>
         nextLeads.find((lead) => lead.id === current?.id) ?? nextLeads[0] ?? null,
       );
-      setIsAuthorized(true);
       setError(null);
     } catch (err: unknown) {
       setError(
@@ -97,17 +95,37 @@ export default function AdminPage() {
           : "Unable to connect to admin API.",
       );
     } finally {
-      setSessionChecked(true);
       if (!silent) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    void loadLeads(true);
-  }, [loadLeads]);
+    let cancelled = false;
+    async function checkSession() {
+      try {
+        const response = await fetch("/api/admin/session", { cache: "no-store" });
+        const payload = await response.json();
+        if (cancelled) return;
+        if (!response.ok || !payload?.success) {
+          throw new Error("Unable to check your admin session. Please try again.");
+        }
+        setIsAuthorized(payload.authenticated === true);
+        if (!payload.configured) {
+          setError("Admin login is unavailable. Contact the site owner to finish setting it up.");
+        }
+      } catch {
+        if (!cancelled) setError("Unable to check your admin session. Please try signing in.");
+      } finally {
+        if (!cancelled) setSessionChecked(true);
+      }
+    }
+    void checkSession();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     if (!isAuthorized) return;
+    void loadLeads(true);
     const intervalId = window.setInterval(() => {
       void loadLeads(true);
     }, 3000);
@@ -129,7 +147,12 @@ export default function AdminPage() {
         setError(payload?.error || `Admin API responded with ${response.status}`);
         return;
       }
-      await loadLeads(true);
+      if (!payload?.success) {
+        setError("Unable to sign in. Please try again.");
+        return;
+      }
+      setPassword("");
+      setIsAuthorized(true);
     } catch (err: unknown) {
       setError(
         err instanceof Error
@@ -218,6 +241,9 @@ export default function AdminPage() {
             <div className="grid gap-5 sm:grid-cols-[1fr_auto]">
               <input
                 type="password"
+                name="password"
+                autoComplete="current-password"
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Admin password"
@@ -228,8 +254,8 @@ export default function AdminPage() {
                 {loading ? "Checking…" : "Unlock dashboard"}
               </button>
             </div>
-            <p className="mt-4 text-sm text-slate-400">Need help? Make sure the password in your `.env` file matches `ADMIN_PASSWORD`.</p>
-            {error ? <p className="mt-4 rounded-3xl bg-rose-500/10 px-4 py-3 text-sm text-rose-300">{error}</p> : null}
+            <p className="mt-4 text-sm text-slate-400">Sign in with your admin password to manage leads.</p>
+            {error ? <p role="alert" className="mt-4 rounded-3xl bg-rose-500/10 px-4 py-3 text-sm text-rose-300">{error}</p> : null}
           </form>
         ) : (
           <div className="space-y-6">

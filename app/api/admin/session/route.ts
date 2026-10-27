@@ -3,10 +3,32 @@ import {
   ADMIN_SESSION_COOKIE,
   createAdminSessionToken,
   getAdminSessionMaxAge,
+  hasValidAdminSession,
+  isAdminLoginConfigured,
   isAdminPasswordValid,
 } from "@/lib/admin-auth";
 
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request) {
+  return NextResponse.json(
+    {
+      success: true,
+      authenticated: hasValidAdminSession(request),
+      configured: isAdminLoginConfigured(),
+    },
+    { headers: { "Cache-Control": "no-store" } },
+  );
+}
+
 export async function POST(request: Request) {
+  if (!isAdminLoginConfigured()) {
+    return NextResponse.json(
+      { success: false, error: "Admin login is unavailable. Contact the site owner to finish setting it up." },
+      { status: 503 },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
